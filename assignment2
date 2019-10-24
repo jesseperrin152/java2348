@@ -1,0 +1,247 @@
+import java.util.Scanner;
+
+public class StudentInfo {
+    //main, need to set up array and set up for student info, and display info
+    public static void main(String[] args) {
+
+        Scanner s = new Scanner(System.in);
+        int n;
+        System.out.println("Enter no of Students");
+        n = s.nextInt();
+
+        Student[] students = new Student[n];
+
+        // Needs to read studentinfo by calling getInfo of Student
+        for (int i = 0; i < n; i++) {
+            System.out.println("Enter Details of Student "+ (i+1)+" : \n");
+            Student std = new Student();
+            std.getInfo();
+            students[i] = std;
+        }
+
+        // Prints report of students
+        System.out.println("\n                      Students Details, Department of ILT                      \n");
+        for(int i=0; i<Student.count;i++) {
+            students[i].displayInfo();
+        }
+        //System.out.println("Please work");
+        System.out.println("\nNumber of students: " + Student.count);
+    }
+
+}
+
+class Student {
+
+    Scanner s = new Scanner(System.in);
+
+    String firstName;
+    String lastName;
+    int peopleSoftId;
+    String classStanding;
+    String email;
+    String addressLine1;
+    String city;
+    String state;
+    long zipcode;
+
+    static int count = 0;
+
+    public Student() {
+    }
+    //try to use this. keyword in constructor example = this.Stringname = String, used once I getInfo
+    //Remember: The most common reason for using the this keyword is because a field is shadowed by a method or constructor parameter.
+    public Student(String firstName, String lastName, int peopleSoftId, String classStanding, String email, String addressLine1, String city, String state, long zipcode) {
+
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.peopleSoftId = peopleSoftId;
+        this.classStanding = classStanding;
+        this.email = email;
+        this.addressLine1 = addressLine1;
+        this.city = city;
+        this.state = state;
+        this.zipcode = zipcode;
+    }
+
+    public String getFirstName() {
+        return firstName;
+    }
+
+    public void setFirstName(String firstName) {
+        this.firstName = firstName;
+    }
+
+    public String getLastName() {
+        return lastName;
+    }
+
+    public void setLastName(String lasstName) {
+        this.lastName = lasstName;
+    }
+
+    public int getPeopleSoftId() {
+        return peopleSoftId;
+    }
+
+    public void setPeopleSoftId(int peopleSoftId) {
+        this.peopleSoftId = peopleSoftId;
+    }
+
+    public String getClassStanding() {
+        return classStanding;
+    }
+
+    public void setClassStanding(String classStanding) {
+        this.classStanding = classStanding;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+    //Use Override like in class
+    @Override
+    public String toString() {
+        return firstName + "\t" + lastName + "\t" + peopleSoftId + "\t" + classStanding + "\t" + email + "\t" + addressLine1 + "\t" + city + "\t" + state + "\t" + zipcode;
+    }
+
+    //input and validation
+    //Once all is validated need to display info, need to fix validation on email
+
+    public void getInfo() {
+
+        while (true) {
+            System.out.println("Enter Valid Firstname");
+            String tempFname = s.next();
+            if (isValidNameString(tempFname)) {
+                this.firstName = tempFname;
+                break;
+            }
+        }
+
+        while (true) {
+            System.out.println("Enter Valid Lastname");
+            String tempLname = s.next();
+            if (isValidNameString(tempLname)) {
+                this.lastName = tempLname;
+                break;
+            }
+        }
+
+        while (true) {
+            System.out.println("Enter valid people soft id");
+            String tempId = s.next();
+            if (isValidSoftId(tempId)) {
+                this.peopleSoftId = Integer.parseInt(tempId);
+                break;
+            }
+        }
+
+        while (true) {
+            System.out.println("Enter valid Class standing  [ freshman, sophomore, junior, senior ]");
+            String tempId = s.next();
+            if ("freshman".equalsIgnoreCase(tempId) || "sophomore".equalsIgnoreCase(tempId)
+                    || "junior".equalsIgnoreCase(tempId) || "senior".equalsIgnoreCase(tempId)) {
+                this.classStanding = tempId;
+                break;
+            }
+        }
+
+        while (true) {
+            System.out.println("Enter valid Email Id");
+            String email = s.next();
+            if (isValidEmail(email)) {
+                this.email = email;
+                break;
+            }
+        }
+
+        while (true) {
+            System.out.println("Enter valid Address line ");
+            s.nextLine();
+            String line = s.nextLine();
+            if (line.contains(" ")) {
+                this.addressLine1 = line;
+                break;
+            }
+        }
+
+        System.out.println("Enter valid City Name ");
+        this.city = s.next();
+
+        String states = ",AK,AL,AR,AZ,CA,CO,CT,DC,DE,FL,GA,HI,IA,ID,IL,IN,KS,KY,LA,MA,MD,ME,MI,MN,MO,MS,MT,NC,ND,NE,NH,NJ,NM,NV,NY,OH,OK,OR,PA,RI,SC,SD,TN,TX,UT,VA,VT,WA,WI,WV,WY,";
+
+        while (true) {
+            System.out.println("Enter valid State Name ( AK,AL,AR,AZ,CA,CO,CT,DC,DE,FL,GA,HI,IA,ID,IL,IN,KS,KY,LA,MA,MD,ME,MI,MN,MO,MS,MT,NC,ND,NE,NH,NJ,NM,NV,NY,OH,OK,OR,PA,RI,SC,SD,TN,TX,UT,VA,VT,WA,WI,WV,WY ) ");
+            String state = s.next();
+            if (states.contains("," + state + ",")) {
+                this.state = state;
+                break;
+            }
+        }
+
+        while (true) {
+            System.out.println("Enter valid Zip code ");
+            String line = s.next();
+            if (isValidZipCode(line)) {
+                this.zipcode = Long.parseLong(line);
+                break;
+            }
+        }
+        count++;
+    }
+
+
+    public void displayInfo() {
+        System.out.println(this.toString());
+    }
+
+    private boolean isValidEmail(String email) {
+        if (email == null || email.length() < 5) {
+            return false;
+        }
+        if (email.endsWith(".com") || email.endsWith(".edu") || email.endsWith(".org")) {
+            if (email.indexOf("@") != -1 && email.indexOf("@") == email.lastIndexOf("@")) { // @ should be present only once
+                return true;
+            }
+        }
+        return false;
+    }
+
+    private boolean isValidNameString(String str) {
+        for (char c : str.toCharArray()) {
+            if (!Character.isAlphabetic(c)) {
+                return false;
+            }
+        }
+        return true;
+    }
+
+    private boolean isValidSoftId(String id) {
+        if (id.length() > 7) {
+            return false;
+        }
+        for (char c : id.toCharArray()) {
+            if (!Character.isDigit(c)) {
+                return false;
+            }
+        }
+        return true;
+    }
+
+    private boolean isValidZipCode(String zip) {
+        if (zip.length() != 9) {
+            return false;
+        }
+        for (char c : zip.toCharArray()) {
+            if (!Character.isDigit(c)) {
+                return false;
+            }
+        }
+        return true;
+    }
+}
